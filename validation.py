@@ -16,6 +16,7 @@ from sklearn.base import clone
 
 from joblib import Parallel, delayed, cpu_count
 
+
 METRICS = ['auc', 'f1', 'tn', 'fp', 'fn', 'tp']
 
 
@@ -85,10 +86,10 @@ def _predict_eval(clf: Any, x: np.ndarray, y: np.ndarray, idx_test: np.ndarray,
 
 def _fit_predict_chunk(clf: Any, x: np.ndarray, y: np.ndarray,
                        df_match: pd.DataFrame, indices: Iterable,
-                       dissect_keys: Optional[List[str]] = None) \
+                       keys_dissect: Optional[List[str]] = None) \
         -> Tuple[np.ndarray, dict]:
 
-    dissect = len(dissect_keys) > 0
+    dissect = len(keys_dissect) > 0
 
     if isinstance(y, str):
         y = df_match[y].to_numpy()
@@ -96,13 +97,13 @@ def _fit_predict_chunk(clf: Any, x: np.ndarray, y: np.ndarray,
     if dissect:
         df_match = df_match.copy()
         df_match['y'], df_match['p'] = y, 0
-        for k in dissect_keys:
+        for k in keys_dissect:
             df_match[k] = df_match[k].astype('category')
 
     coef = []
     score = {'default': defaultdict(list)}
     if dissect:
-        score.update({k: defaultdict(list) for k in dissect_keys})
+        score.update({k: defaultdict(list) for k in keys_dissect})
 
     for i, (idx_train, idx_test) in enumerate(indices):
         x_train, y_train = x[idx_train], y[idx_train]
@@ -136,7 +137,7 @@ def _fit_predict_chunk(clf: Any, x: np.ndarray, y: np.ndarray,
             df_match.loc[idx, 'p'] = p
             df = df_match.iloc[idx].copy()
             df['strata'] = df['strata'].astype('category')
-            for k in dissect_keys:
+            for k in keys_dissect:
                 sc = df.groupby(k).apply(
                     lambda a: _eval(a.y, a.p, to_df=True))
                 sc = [sc.unstack(0).to_frame().T]
@@ -183,7 +184,7 @@ def _get_chunked_pairs(n_perm, n_chunks):
 
 def cross_validate(clf: Any, x: np.ndarray, y: np.ndarray,
                    df_match: pd.DataFrame, indices: Iterable,
-                   dissect_keys: Optional[List[str]] = None,
+                   keys_dissect: Optional[List[str]] = None,
                    n_jobs: int = 1) -> Tuple[np.ndarray, dict]:
     """ Cross validation.
 
@@ -201,7 +202,7 @@ def cross_validate(clf: Any, x: np.ndarray, y: np.ndarray,
         Dataframe with matched subjects.
     indices: List or iterable object
         Iterable with train/test indices for each split.
-    dissect_keys: list of str, default=None
+    keys_dissect: list of str, default=None
         Covariates in `df_match` used to dissect performance (e.g., subject
         sex or scan acquisition site).
     n_jobs: int, default=1
@@ -216,10 +217,10 @@ def cross_validate(clf: Any, x: np.ndarray, y: np.ndarray,
         Dictionary of scores for each split.
 
     """
-    if dissect_keys is None:
-        dissect_keys = []
-    elif isinstance(dissect_keys, str):
-        dissect_keys = [dissect_keys]
+    if keys_dissect is None:
+        keys_dissect = []
+    elif isinstance(keys_dissect, str):
+        keys_dissect = [keys_dissect]
 
     indices = list(indices)
     n = len(indices)
@@ -229,15 +230,15 @@ def cross_validate(clf: Any, x: np.ndarray, y: np.ndarray,
     res = Parallel(n_jobs=n_jobs)(
         delayed(_fit_predict_chunk)(
             clf, x, y, df_match, [indices[k] for k in np.arange(i, j)],
-            dissect_keys=dissect_keys) for (i, j) in chunks)
+            keys_dissect=keys_dissect) for (i, j) in chunks)
 
     coef, list_scores = list(zip(*res))
     score = defaultdict(dict)
     for k1, d in list_scores[0].items():
         for k2 in d.keys():
             sc = [s1 for s in list_scores for s1 in s[k1][k2]]
-            sc = pd.concat(sc, keys=range(len(sc)), names=['comb'])
+            sc = pd.concat(sc, keys=range(len(sc)), names=['draw'])
             score[k1][k2] = sc.reorder_levels([1, 0, 2]).sort_index(
-                level=['set', 'comb'])
+                level=['set', 'draw'])
 
     return np.vstack(coef), score

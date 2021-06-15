@@ -22,7 +22,7 @@ def estimate_ps(df_cov: pd.DataFrame, y: np.ndarray,
 
     Parameters
     ----------
-    df_cov: pd.DataFrame, shape=(n_subjects, n_covariates)
+    df_cov: pd.DataFrame of shape=(n_subjects, n_covariates)
         DataFrame holding subjects covariates.
     y: np.ndarray[int], shape=(n_subjects,)
         Binary class label (e.g., diagnosis)
