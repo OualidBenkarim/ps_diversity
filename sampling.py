@@ -104,18 +104,29 @@ def split_strata(df_match: pd.DataFrame, n_train_strata: int = 5,
 
 def get_indices(df_match: pd.DataFrame, dict_strata: Dict[str, List],
                 join: bool = False) -> Iterator[Tuple[np.ndarray, np.ndarray]]:
-    """
+    """Generate train/test indices based on train/test strata for each split.
+
+    This is use for both Contiguous/Diverse sampling schemes.
 
     Parameters
     ----------
-    df_match
-    dict_strata
-    join
+    df_match: pd.DataFrame
+        Dataframe with matched subjects.
+    dict_strata: dict
+        Dictionary holding lists train/test strata.
+    join: bool, default=False
+        Ir False, yield one array of indices for all test strata. Otherwise,
+        a list of arrays for each test stratum is returned.
 
-    Returns
+    Yields
     -------
+    idx_train: np.ndarray
+        The training set indices for that split.
+    idx_test: np.ndarray
+        The testing set indices for that split.
 
     """
+
     g = df_match.groupby('strata').groups
     for i, st_train in enumerate(dict_strata['train']):
         idx_train = np.concatenate([g[s].to_numpy() for s in st_train])
@@ -125,20 +136,70 @@ def get_indices(df_match: pd.DataFrame, dict_strata: Dict[str, List],
         yield idx_train, idx_test
 
 
-def get_indices_cv(df_match: pd.DataFrame, strata_train: List,
-                   is_strata: bool = True, n_splits: int = 10) \
+def get_indices_null(df_match: pd.DataFrame, n_train_strata: int = 2,
+                     n_draws: int = 20) \
         -> Iterator[Tuple[np.ndarray, np.ndarray]]:
-    """
+    """Generate random train/test splits.
+
+    This is the Random sampling scheme.
 
     Parameters
     ----------
-    df_match
-    strata_train
-    is_strata
-    n_splits
+    df_match: pd.DataFrame
+        Dataframe with matched subjects.
+    n_train_strata: int, default=2
+        Number of strata to use for training.
+    n_draws: int: default=20
+        Number of splits.
 
-    Returns
+    Yields
     -------
+    idx_train: np.ndarray
+        The training set indices for that split.
+    idx_test: np.ndarray
+        The testing set indices for that split.
+
+    """
+
+    train_size = n_train_strata
+    if n_train_strata > 1:
+        train_size /= df_match.strata.nunique()
+
+    kf = StratifiedShuffleSplit(n_splits=n_draws, train_size=train_size,
+                                random_state=0)
+
+    y = (df_match[['group']] == 'Pos').astype(int)
+    idx = df_match.index.to_numpy()
+    for idx_train, idx_test in kf.split(y, y):
+        yield idx[idx_train], idx[idx_test]
+
+
+def get_indices_cv(df_match: pd.DataFrame, strata_train: list,
+                   is_strata: bool = True, n_splits: int = 10) \
+        -> Iterator[Tuple[np.ndarray, np.ndarray]]:
+    """Generate train/test splits from a set of strata.
+
+    Uses sklearn's StratifiedKFold.
+    This is used to asses within-distribution performance.
+
+    Parameters
+    ----------
+    df_match: pd.DataFrame
+        Dataframe with matched subjects.
+    strata_train: array-like
+        Strata ids used for training.
+    is_strata: bool, default=True
+        If True, `strata_train` contains strata ids. Otherwise, it contains
+        subject indices.
+    n_splits: int: default=10
+        Number of splits.
+
+    Yields
+    -------
+    idx_train: np.ndarray
+        The training set indices for that split.
+    idx_test: np.ndarray
+        The testing set indices for that split.
 
     """
 
@@ -156,29 +217,3 @@ def get_indices_cv(df_match: pd.DataFrame, strata_train: List,
             yield idx[idx_train], idx[idx_test]
 
 
-def get_indices_null(df_match: pd.DataFrame, n_train_strata: int = 2,
-                     n_draws: int = 20) \
-        -> Iterator[Tuple[np.ndarray, np.ndarray]]:
-    """
-
-    Parameters
-    ----------
-    df_match
-    n_train_strata
-    n_draws
-
-    Returns
-    -------
-
-    """
-    train_size = n_train_strata
-    if n_train_strata > 1:
-        train_size /= df_match.strata.nunique()
-
-    kf = StratifiedShuffleSplit(n_splits=n_draws, train_size=train_size,
-                                random_state=0)
-
-    y = (df_match[['group']] == 'Pos').astype(int)
-    idx = df_match.index.to_numpy()
-    for idx_train, idx_test in kf.split(y, y):
-        yield idx[idx_train], idx[idx_test]
