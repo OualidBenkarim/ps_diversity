@@ -122,6 +122,7 @@ def _fit_predict_chunk(clf: Any, x: np.ndarray, y: np.ndarray,
             coef.append(np.full(x.shape[1], np.nan))
 
         # predict test
+        idx_test = {'test': idx_test}
         for s, idx in idx_test.items():
             mult = isinstance(idx, list)
             p, sc = _predict_eval(clf_fit, x, y, idx, mult=mult)
@@ -212,7 +213,6 @@ def cross_validate(clf: Any, x: np.ndarray, y: np.ndarray,
     -------
     coef: np.ndarray of shape (n_splits, n_features)
         Model coefficients
-
     scores: dict
         Dictionary of scores for each split.
 
