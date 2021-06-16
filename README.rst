@@ -1,4 +1,4 @@
-...  ps_diversity
+...ps_diversity
 
 .. image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/OualidBenkarim/ps_diversity/main?urlpath=https%3A%2F%2Fgithub.com%2FOualidBenkarim%2Fps_diversity%2Fblob%2Fmain%2Fexample.ipynb
