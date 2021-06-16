@@ -15,11 +15,11 @@ Benkarim O, Paquola C, Park B, Kebets V, Hong SJ, Vos de Wael R, Zhang S, Yeo BT
 Poline JB, Bernhardt B, and Bzdok D. (2021) *The Cost of Untracked Diversity in Brain-Imaging Prediction*. TBA
 
 Code
-~~~~
+----
 
 There are 2 main functions:
 
-.. code:: python
+.. code-block:: python
 
     from evaluation import evaluate_diversity, evaluate_sampling
 
