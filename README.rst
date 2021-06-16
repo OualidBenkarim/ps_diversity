@@ -1,5 +1,5 @@
 The cost of untracked diversity in brain-imaging prediction
-===========================================================
+-----------------------------------------------------------
 
 .. image:: https://img.shields.io/badge/Made%20with-Python-blue.svg
    :target: https://www.python.org/
@@ -15,19 +15,13 @@ The cost of untracked diversity in brain-imaging prediction
 This repo contains code for our work on the role of diversity in prediction accuracy.
 
 Paper
------
+~~~~~
 Benkarim O, Paquola C, Park B, Kebets V, Hong SJ, Vos de Wael R, Zhang S, Yeo BTT, Eickenberg M, Ge T,
 Poline JB, Bernhardt B, and Bzdok D. (2021) *The Cost of Untracked Diversity in Brain-Imaging Prediction*. TBA
 
-.. epigraph::
-
-    Benkarim O, Paquola C, Park B, Kebets V, Hong SJ, Vos de Wael R, Zhang S, Yeo BTT, Eickenberg M, Ge T,
-    Poline JB, Bernhardt B, and Bzdok D. (2021) *The Cost of Untracked Diversity in Brain-Imaging Prediction*. TBA
-
-
 
 Code
-----
+~~~~
 There are 2 main functions to evaluate the impact of diversity:
 
 .. code-block:: python
@@ -50,6 +44,6 @@ The example uses the sample data provided with the code. For dependencies, check
 The code was tested in Python 3.6-3.8.
 
 License
--------
+~~~~~~~
 
 The source code is available under the `BSD (3-Clause) license <https://github.com/OualidBenkarim/ps_diversity/blob/main/LICENSE>`_.
