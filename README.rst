@@ -8,8 +8,7 @@ The cost of untracked diversity in brain-imaging prediction
 .. image:: https://img.shields.io/badge/License-BSD%203--Clause-blue.svg
    :target: https://opensource.org/licenses/BSD-3-Clause
 
-..
-
+|
 
 This repo contains code for our work on the impact of diversity on prediction accuracy
 
