@@ -1,6 +1,7 @@
 The cost of untracked diversity in brain-imaging prediction
 ===========================================================
 
+
 .. image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/OualidBenkarim/ps_diversity/main?urlpath=https%3A%2F%2Fgithub.com%2FOualidBenkarim%2Fps_diversity%2Fblob%2Fmain%2Fexample.ipynb
 
@@ -15,23 +16,22 @@ Benkarim O, Paquola C, Park B, Kebets V, Hong SJ, Vos de Wael R, Zhang S, Yeo BT
 Poline JB, Bernhardt B, and Bzdok D. (2021) *The Cost of Untracked Diversity in Brain-Imaging Prediction*. TBA
 
 Code
-----
+~~~~
 
-There are 2 main functions:
+There are 2 main functions to evaluate the impact of diversity:
 
 .. code-block:: python
 
     from evaluation import evaluate_diversity, evaluate_sampling
 
-    # Compares prediction performance of *contiguous* vs *diverse* sampling schemes
+    # Compare prediction performance of contiguous vs diverse sampling schemes
     coef, score = evaluate_sampling(...)
 
-    # Performance
+    # Evaluate prediction performance vs diversity
     df_match, coef, score = evaluate_diversity(...)
 
 
-License
-=======
+To run the code, check the notebook example.ipynb. You can also run it in `Binder <https://mybinder.org/v2/gh/OualidBenkarim/ps_diversity/main?urlpath=https%3A%2F%2Fgithub.com%2FOualidBenkarim%2Fps_diversity%2Fblob%2Fmain%2Fexample.ipynb>`_.
 
 
 License
