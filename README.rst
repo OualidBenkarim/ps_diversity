@@ -1,6 +1,8 @@
 The cost of untracked diversity in brain-imaging prediction
 ===========================================================
 
+.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
+   :target: https://www.python.org/
 
 .. image:: https://mybinder.org/badge_logo.svg
      :target: https://mybinder.org/v2/gh/OualidBenkarim/ps_diversity/main?urlpath=https%3A%2F%2Fgithub.com%2FOualidBenkarim%2Fps_diversity%2Fblob%2Fmain%2Fexample.ipynb
@@ -39,6 +41,7 @@ All the functions are documented. To run the code, check the `example <https://g
 You can also run it in `Binder <https://mybinder.org/v2/gh/OualidBenkarim/ps_diversity/main?urlpath=https%3A%2F%2Fgithub.com%2FOualidBenkarim%2Fps_diversity%2Fblob%2Fmain%2Fexample.ipynb>`_.
 The example uses the sample data provided with the code. For dependencies, check `<requirements.txt https://github.com/OualidBenkarim/ps_diversity/blob/main/requirements.txt>`_
 
+Tested in Python 3.6-3.8.
 
 License
 -------
