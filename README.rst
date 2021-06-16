@@ -1,7 +1,7 @@
 The cost of untracked diversity in brain-imaging prediction
 ===========================================================
 
-.. |made-with-python| image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
+.. image:: https://img.shields.io/badge/Made%20with-Python-1f425f.svg
    :target: https://www.python.org/
 
 .. image:: https://mybinder.org/badge_logo.svg
