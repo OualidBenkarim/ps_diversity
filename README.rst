@@ -11,7 +11,7 @@ The cost of untracked diversity in brain-imaging prediction
 ..
 
 
-| This repo contains code for our work on the impact of diversity on prediction accuracy:
+ | This repo contains code for our work on the impact of diversity on prediction accuracy:
 
 Benkarim O, Paquola C, Park B, Kebets V, Hong SJ, Vos de Wael R, Zhang S, Yeo BTT, Eickenberg M, Ge T,
 Poline JB, Bernhardt B, and Bzdok D. (2021) *The Cost of Untracked Diversity in Brain-Imaging Prediction*. TBA
