@@ -84,7 +84,7 @@ def split_strata(df_match: pd.DataFrame, n_train_strata: int = 5,
 
             xd = dist[k].iloc[idx_train, idx_test]
             d = [v.to_numpy().mean() for _, v in xd.groupby('strata', axis=1)]
-            rw['test', f'inter_{k}_strata' % k] = d
+            rw['test', f'inter_{k}_strata'] = d
 
     dict_strata['test'] = np.vstack(dict_strata['test'])
     for k, c in df_strata.items():
@@ -203,7 +203,7 @@ def get_indices_cv(df_match: pd.DataFrame, strata_train: list,
 
     """
 
-    kf = StratifiedKFold(n_splits=n_splits, random_state=0)
+    kf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=0)
 
     for st in strata_train:
         if is_strata:
