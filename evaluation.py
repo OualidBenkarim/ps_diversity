@@ -254,7 +254,7 @@ def evaluate_diversity(clf: Any, x: np.ndarray, y: np.ndarray,
     return df_strata, coef, score
 
 
-def decounfound(dec: str, df_conf: pd.DataFrame, x: np.ndarray,
+def deconfound(dec: str, df_conf: pd.DataFrame, x: np.ndarray,
                 site_col: Optional[str] = None,
                 cat: Optional[List[str]] = None) -> np.ndarray:
     """Deconfounding.
@@ -371,6 +371,6 @@ def prepare_data(x: np.ndarray, y: np.ndarray, df_cov: pd.DataFrame,
     if dec is not None:
         if dec == 'combat':
             cat += ['group']
-        x = decounfound(dec, df_match, x, site_col=site_col, cat=cat)
+        x = deconfound(dec, df_match, x, site_col=site_col, cat=cat)
 
     return df_match, x, y
